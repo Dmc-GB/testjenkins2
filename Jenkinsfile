@@ -1,5 +1,7 @@
 pipeline {
-    agent test
+    agent {
+        label 'jenkins-agent'
+    }
 
     stages {
         stage('Clone repository') {
