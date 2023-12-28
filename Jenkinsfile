@@ -7,13 +7,13 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    def dockerImage = docker.build "cleopatra-frontend:${env.BUILD_NUMBER}"
+                    def dockerImage = docker.build "cleopatra-frontend:v${env.BUILD_NUMBER}"
                 }
             }
         }
         stage('Save') {
             steps {
-                sh "docker save cleopatra-frontend:${env.BUILD_NUMBER} -o cleopatra-frontend.tar"
+                sh "docker save cleopatra-frontend:v${env.BUILD_NUMBER} -o cleopatra-frontend.tar"
             }
         }
     }
