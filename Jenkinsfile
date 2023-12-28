@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label 'test'
-    }
+    agent test
 
     stages {
         stage('Clone repository') {
