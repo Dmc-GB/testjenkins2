@@ -1,19 +1,19 @@
 pipeline {
     agent any
-    
+    environment {
+        dockerImage = ""
+    }
     stages {
-        stage('Clone repository') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Build Node.js Docker Image') {
+        stage('Build') {
             steps {
                 script {
-                    // Construire l'image Docker
-                    docker.build("your-dockerhub-username/nodejs-app:${env.BUILD_ID} .")
+                    def dockerImage = docker.build "cleopatra-frontend:${env.BUILD_NUMBER}"
                 }
+            }
+        }
+        stage('Save') {
+            steps {
+                sh "docker save cleopatra-frontend:${env.BUILD_NUMBER} -o cleopatra-frontend.tar"
             }
         }
     }
