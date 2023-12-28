@@ -14,6 +14,7 @@ pipeline {
         stage('cat some file') {
             steps {
                 sh 'docker ps -a'
+                sh 'cat /home/mariano/Documents/Priv/Docker-compose/docker-compose.yml'
             }
         }
     }
