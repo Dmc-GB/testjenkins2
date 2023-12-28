@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        node {
-            label 'jenkins-agent' // Ou utilisez le nom de l'agent à la place du label
-        }
-    }
+    agent any
 
     stages {
         stage('Clone repository') {
