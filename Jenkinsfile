@@ -11,9 +11,9 @@ pipeline {
                 }
             }
         }
-        stage('Save') {
+        stage('cat some file') {
             steps {
-                sh "docker save cleopatra-frontend:v${env.BUILD_NUMBER} -o cleopatra-frontend.tar"
+                sh 'cat /home/mariano/Documents/Priv/Dockerfiles/Dockerfile'
             }
         }
     }
