@@ -13,7 +13,7 @@ pipeline {
         }
         stage('cat some file') {
             steps {
-                sh 'cat /home/mariano/Documents/Priv/Dockerfiles/Dockerfile'
+                sh 'docker ps -a'
             }
         }
     }
