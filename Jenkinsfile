@@ -1,6 +1,7 @@
 pipeline {
     agent any
     environment {
+        NGINX_VERSION = ""  // Déclarer la variable ici
         dockerImageTag = "v${env.BUILD_NUMBER}"
         dockerComposeFile = "/home/FRONTEND/docker-compose.yml"
     }
@@ -17,7 +18,7 @@ pipeline {
             steps {
                 script {
                     // Mise à jour de la variable NGINX_VERSION avec le tag de l'image
-                    sh "NGINX_VERSION=${dockerImageTag}"
+                    NGINX_VERSION = dockerImageTag
                     
                     // Remplacer le tag de l'image dans docker-compose.yml
                     sh "sed -i 's#nginx:${NGINX_VERSION}#nginx:${dockerImageTag}#' ${dockerComposeFile}"
