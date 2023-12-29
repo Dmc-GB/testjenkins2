@@ -7,14 +7,20 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    def dockerImage = docker.build "cleopatra-frontend:v${env.BUILD_NUMBER}"
+                    // Construire l'image Docker et récupérer son nom
+                    dockerImage = docker.build "cleopatra-frontend:v${env.BUILD_NUMBER}"
                 }
             }
         }
-        stage('cat some file') {
+        stage('Deploy') {
             steps {
-                sh 'docker ps -a'
-                sh 'docker-compose --version'
+                script {
+                    // Remplacer le nom de l'image dans docker-compose.yml
+                    sh "sed -i 's#nginx:latest#${dockerImage.imageName}#' /path/to/your/docker-compose.yml"
+
+                    // Lancer docker-compose
+                    sh 'docker-compose up -d'
+                }
             }
         }
     }
