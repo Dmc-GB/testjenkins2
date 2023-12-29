@@ -8,17 +8,25 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Construire l'image Docker avec le tag spécifié
-                    docker.build("nginx:${dockerImageTag}")
+                    // Extraire la version actuelle de NGINX depuis le fichier docker-compose.yml
+                    def currentNginxVersion = sh(script: "grep 'image: nginx:' ${dockerComposeFile} | cut -d ':' -f 3", returnStdout: true).trim()
+
+                    // Construire l'image Docker avec la version actuelle
+                    docker.build("nginx:${currentNginxVersion}")
+                }
+            }
+        }
+        stage('Update Docker Compose') {
+            steps {
+                script {
+                    // Remplacer le tag de l'image dans docker-compose.yml
+                    sh "sed -i 's#nginx:${currentNginxVersion}#nginx:${dockerImageTag}#' ${dockerComposeFile}"
                 }
             }
         }
         stage('Deploy') {
             steps {
                 script {
-                    // Remplacer le tag de l'image dans docker-compose.yml
-                    sh "sed -i 's#nginx:latest#nginx:${dockerImageTag}#' ${dockerComposeFile}"
-
                     // Lancer docker-compose
                     sh "docker-compose -f ${dockerComposeFile} up -d"
                 }
